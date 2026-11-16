@@ -173,3 +173,7 @@ Only on the user's go:
 4. Offer once: `/create-verification-skill`, so agents can drive the real app for proof.
 5. No pre-commit checks: offer a lint, typecheck, and test hook. Add it only on the user's OK.
 
+## Big or unattended work
+
+For a multi-hour migration, stacked PRs, or "run until done", switch to `/poteto-mode`. It routes to figure-it-out, show-me-your-work, and orchestrate. `/ship` stays the default for normal tasks.
+
