@@ -24,3 +24,15 @@ Usage:
 - **Outward actions need a yes.** Commit, push, PR, deploy, messages. Never force-push. Never skip hooks.
 - **Evidence or label.** Every claim in the final report is measured (command plus output) or marked inferred or guess.
 
+## 0. Frame (every tier)
+
+1. Restate the goal, the problem, and the smallest change that meets it, in two or three lines. Do not wait for confirmation.
+2. Ask ponytail's rung 0: does this need to exist? If the evidence rules out the requested change, show it and stop.
+3. Read before writing. Trace the code you will touch and grep all its callers. If code looks odd, check `git log -L` or blame before changing it. It may be deliberate.
+4. Pick the tier and say it in one line.
+   - **S**: one or two files with no behavior change for users, and nothing on a security, data, or money path. Typos, config, renames, copy, dependency bumps with green tests.
+   - **M** (default): a feature, bug fix, or refactor inside one subsystem. Any bug fix is at least M, because it needs a repro test.
+   - **L**: crosses modules or a public API, adds a data model or migration, touches auth, sessions, payments, PII or secrets, involves concurrency, is a one-way door, or spans roughly eight or more files.
+   - Bump one tier when the change can lose data, leak data, or move money. An L task that bumps stays L, and the built-in `/security-review` becomes mandatory.
+5. Ask the user only real preference calls (product or UX choices no experiment can settle). Anything observable (behavior, timing, output, perf) gets tried and measured, and the result decides. The one planned interview is `/architect` in L. Even there, when the user said "run until done" or is away, take each question's recommended option and list the defaults you took in the report.
+
