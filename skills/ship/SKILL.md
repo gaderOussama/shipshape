@@ -149,3 +149,19 @@ Brief the correctness and security reviewer from the template `~/.claude/skills/
 
 Handle findings per `receiving-code-review`: verify each finding against the code before acting on it, and never agree just to agree. Fix Blockers and Majors, then rerun phase 4. Push back on wrong findings with a concrete reason. Fix Minor and Nit findings when they are one-liners; otherwise list them.
 
+## 6. Finish
+
+S: ponytail's format. Show the code, then at most three lines, one of them the evidence (the command and its result).
+
+M and L: write the final report in short plain sentences, with no filler or hype:
+- the goal, in one line
+- what changed, by file and why
+- evidence: commands and results
+- risks and what was not verified
+- follow-ups
+
+Only on the user's go:
+- Commit in small ordered commits with Conventional Commit titles.
+- Write the PR body as Why, What changed, Scope, Tradeoffs, Blast radius, Verification.
+- L: run `/document pr`, and run `/sync` when the repo has `AGENTS.md` or `docs/specs/`.
+
