@@ -36,3 +36,20 @@ Usage:
    - Bump one tier when the change can lose data, leak data, or move money. An L task that bumps stays L, and the built-in `/security-review` becomes mandatory.
 5. Ask the user only real preference calls (product or UX choices no experiment can settle). Anything observable (behavior, timing, output, perf) gets tried and measured, and the result decides. The one planned interview is `/architect` in L. Even there, when the user said "run until done" or is away, take each question's recommended option and list the defaults you took in the report.
 
+## 1. Design (M, L)
+
+M:
+- Name the data shape first. Write the caller's usage first, then derive types and signatures from it.
+- Model the domain (state machine, table, or typed model) instead of scattered conditionals.
+- Make illegal states unrepresentable.
+- Validate and parse at system boundaries, and trust internal types.
+- Subtract before you add: delete dead code first.
+- No abstraction with one caller. One way to do each thing.
+
+L, in addition:
+- Run `/architect` (the lifecycle spec skill). It writes `docs/specs/NNNN-*.md` with AC-1 style acceptance criteria, a data model, a security model, and a build plan. Every value an action produces needs a named source, or it is an open decision.
+- For a real fork between two or more structurally different designs on a one-way door, read `~/.claude/skills/pstack-architect/SKILL.md`. Sketch at least two shapes and pick by interface depth. Do not run arena routinely.
+- Write the throughput checkpoint: blocking first steps, independent workstreams, shared mutable state, and the smallest safe decomposition. It sets the worker split in phase 3.
+
+Plans name files, data shapes, and tests. Plans never contain full code.
+
