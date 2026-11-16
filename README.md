@@ -163,3 +163,29 @@ cat shipshape/CLAUDE.snippet.md >> ~/.claude/CLAUDE.md
 
 The snippet turns `/ship` on for every coding task and sets the precedence between packs. Start a new Claude Code session to load it.
 
+## Usage
+
+| Command | What it does |
+|---|---|
+| `/ship <task>` | Runs the full loop. Picks the tier itself. |
+| `/ship S\|M\|L <task>` | Forces a tier. |
+| `/ship review` | Reviews the current diff only. |
+| `/ship setup` | One-time repo prep: detects test, lint, and run commands, writes `AGENTS.md`, proposes a test framework and pre-commit checks. Asks before installing anything. |
+| `/poteto-mode` | Heavy mode for multi-hour, unattended, or multi-PR work. |
+| "stop ship" | Turns it off for the session. |
+
+With the `CLAUDE.md` snippet installed, you rarely type `/ship`. Ask for a change and the workflow runs.
+
+```text
+> /ship setup
+  Detects the stack, records commands in AGENTS.md, offers a test framework.
+
+> fix the bug where the cart total ignores discounts
+  Tier M. Repro test fails, root cause found, fix, suite green,
+  reviewed on a second model, short report with evidence.
+
+> add Stripe webhooks for refunds
+  Tier L (money). Spec with acceptance criteria, security model,
+  tests per criterion, parallel workers, /security-review.
+```
+
