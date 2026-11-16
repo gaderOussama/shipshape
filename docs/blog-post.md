@@ -38,3 +38,30 @@ flowchart LR
 
 *Before: four packs pulling in different directions on the same task.*
 
+## Step 1: Security check before installing anything
+
+Skills are instructions an AI agent follows, and some ship scripts it can run. A malicious skill could tell the agent to leak secrets or run harmful commands. So every new pack got checked before it was installed.
+
+```mermaid
+flowchart TD
+    A[Clone repo into an isolated scratch folder] --> B[List every file by type]
+    B --> C{Code files}
+    B --> D{Markdown instructions}
+    C --> C1[Network calls?]
+    C --> C2[Process spawning / eval?]
+    C --> C3[Secret or credential access?]
+    C --> C4[Encoded or obfuscated payloads?]
+    D --> D1[Prompt injection: 'ignore previous', 'skip permissions'?]
+    D --> D2[Unknown URLs or data exfiltration?]
+    D --> D3[Hidden Unicode characters?]
+    C1 & C2 & C3 & C4 & D1 & D2 & D3 --> E[Read every hit in context]
+    E --> F{Malicious?}
+    F -- No --> G[Install]
+    F -- Yes --> H[Stop and report]
+```
+
+What the checks found:
+
+- **pstack (569 files):** clean. Its scripts only call `gh`, `git`, a pinned npm package with a checksum, and a checksummed TLA+ jar from the official GitHub release. One behavior was overridden: its "external actions proceed without asking" rule. The agent still asks before sending, posting, pushing, or deploying.
+- **superpowers (68 files installed):** clean. Its one network component, a brainstorming preview server, binds to `127.0.0.1` only and requires a random token plus an origin check. It opens a browser only when you opt in.
+
