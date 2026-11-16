@@ -229,3 +229,13 @@ They contradict each other and multiply cost. One owner per phase is cheaper and
 **Does it commit or push on its own?**
 No. Every outward action waits for your yes.
 
+## Credits
+
+shipshape is glue. The ideas belong to the pack authors:
+
+- **pstack** by Poteto, mirrored by backnotprop. MIT.
+- **superpowers** by Jesse Vincent. MIT.
+- **ponytail** and the **lifecycle pack** by their respective authors.
+
+Check each pack's license before redistributing its files. This repository ships only its own files.
+
