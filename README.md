@@ -239,3 +239,6 @@ shipshape is glue. The ideas belong to the pack authors:
 
 Check each pack's license before redistributing its files. This repository ships only its own files.
 
+## License
+
+MIT
