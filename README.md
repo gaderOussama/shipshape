@@ -118,3 +118,18 @@ mindmap
       Cross-model review
 ```
 
+## Requirements
+
+- [Claude Code](https://claude.com/claude-code)
+- Access to the Opus and Sonnet models (Fable optional, for review panels)
+- The skill packs below. shipshape routes to them; it does not bundle them.
+
+| Pack | Source | Required for |
+|---|---|---|
+| ponytail | its own repository | Minimal-code rules (always on) |
+| pstack | [backnotprop/pstack](https://github.com/backnotprop/pstack) | Principles, `pstack-architect`, `/poteto-mode` |
+| superpowers | [obra/superpowers](https://github.com/obra/superpowers) | Debugging techniques, verification, review templates |
+| lifecycle pack | its own repository | `/architect`, `/test`, `/check`, `/audit`, `/document`, `/sync` |
+
+`/ship` still runs if a pack is missing. It skips the steps that need it.
+
