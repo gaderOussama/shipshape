@@ -199,3 +199,19 @@ When packs disagree, this order wins:
 4. **Outward actions always need a yes.** Commits, pushes, PRs, deploys, and messages.
 5. **Cursor-only steps** in pstack (bugbot, automations, cloud agents) are skipped.
 
+## Repository layout
+
+```text
+shipshape/
+├── skills/
+│   └── ship/
+│       └── SKILL.md          # the workflow
+├── rules/
+│   └── pstack-models.md      # pstack roles mapped to Claude Code models
+├── docs/
+│   └── blog-post.md          # the story of how this was built
+├── CLAUDE.snippet.md         # default-on rule + precedence
+├── LICENSE
+└── README.md
+```
+
