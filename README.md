@@ -40,3 +40,81 @@ shipshape picks one owner per phase, sets precedence between packs, and scales t
 - **Orchestrator and workers.** Opus plans and reviews. Sonnet workers build. No two workers touch the same files.
 - **On by default.** One rule in your global `CLAUDE.md` applies it to every project.
 
+## How it works
+
+### Tier selection
+
+```mermaid
+flowchart TD
+    A[New coding task] --> B{Changes behavior users see?}
+    B -- No --> C{Touches security, data, or money?}
+    C -- No --> S[S tier]
+    C -- Yes --> M
+    B -- Yes --> D{Crosses modules, new data model, auth, payments, PII, concurrency, or 8+ files?}
+    D -- No --> M[M tier]
+    D -- Yes --> L[L tier]
+    M --> E{Can lose data, leak data, or move money?}
+    E -- Yes --> L
+    E -- No --> M2[Stay M]
+    style S fill:#d4edda,stroke:#2d6a4f
+    style M fill:#fff3cd,stroke:#b08900
+    style M2 fill:#fff3cd,stroke:#b08900
+    style L fill:#f8d7da,stroke:#9b2226
+```
+
+### What each tier runs
+
+| Phase | S | M | L |
+|---|:---:|:---:|:---:|
+| Frame: restate goal, read callers | ✅ | ✅ | ✅ |
+| Design: data shape, caller-first | | ✅ | ✅ |
+| Spec via `/architect` | | | ✅ |
+| Failing test first | if logic changes | ✅ | ✅ + tagged to spec |
+| Built by Sonnet workers | one-liners inline | ✅ | ✅ in parallel |
+| Full suite + run the real app | ✅ | ✅ | ✅ + `/check verify` |
+| Security, over-engineering, readability reviewers | self-review | ✅ | ✅ |
+| Built-in `/security-review` + blast radius | | | ✅ |
+| Report | code + 3 lines | full report | full report + `/document` |
+
+### Who does what
+
+```mermaid
+sequenceDiagram
+    participant U as You
+    participant O as Main session (Opus)
+    participant S as Sonnet worker
+    participant R as Reviewer (other model)
+    U->>O: /ship add rate limiting to login
+    O->>O: Frame, pick tier, design
+    O->>S: Brief: goal, files, behaviors to test, rules
+    S->>S: Failing tests (red), minimal code (green)
+    S-->>O: DONE + test output
+    O->>O: Accept diff, run suite, run the app
+    O->>R: Review final diff
+    R-->>O: Findings by severity
+    O->>O: Verify findings, fix, re-verify
+    O-->>U: Goal, changes, evidence, risks
+```
+
+### Where the rules come from
+
+```mermaid
+mindmap
+  root((/ship))
+    ponytail
+      Minimal code ladder
+      Over-engineering review
+    pstack
+      Caller-first design
+      Prove it on the real app
+      Attack the premise
+    superpowers
+      Test first
+      Root-cause debugging
+      Verification before completion
+    lifecycle pack
+      Specs with acceptance criteria
+      Security rules
+      Cross-model review
+```
+
