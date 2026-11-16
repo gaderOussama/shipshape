@@ -94,3 +94,42 @@ Key findings:
 - Almost every pstack skill can only be started by the user typing it, not by the agent. A default workflow has to read those files directly.
 - Full pstack rigor on every task is too heavy. It belongs on big or unattended work.
 
+## Step 3: Pick the best piece for each job
+
+For every phase of development, the strongest version of each idea was kept and the duplicates were dropped.
+
+| Phase | Kept from | The rule |
+|---|---|---|
+| Frame | pstack, ponytail | Restate the goal. Ask "does this need to exist?" Read callers before writing. |
+| Design | pstack, lifecycle `/architect` | Write the caller's usage first, then the types. Big work gets a spec with numbered acceptance criteria. |
+| Tests | superpowers, pstack `tdd`, lifecycle `/test` | Failing test first. Each test names the bug it catches. Mock only external things. Never weaken an assertion. |
+| Build | ponytail, lifecycle `/develop` | Reuse, then stdlib, then native, then a dependency, then new code. Authorization on every action. No secrets in logs. |
+| Debug | superpowers, lifecycle `/debug` | Reproduce, localize, one hypothesis at a time. Three failed fixes means question the design. |
+| Verify | pstack, superpowers, lifecycle `/check` | Run it on the real app. No "done" without fresh command output. |
+| Review | lifecycle `/check review`, ponytail-review, superpowers | Reviewer runs on a different model than the author. Separate passes for security, over-engineering, readability. |
+| Finish | pstack, superpowers | Short evidence-based report. Commit and PR only when asked. |
+
+```mermaid
+mindmap
+  root((/ship))
+    ponytail
+      Minimal code ladder
+      Over-engineering review
+      Shortcut markers
+    pstack
+      Restate the goal
+      Caller-first design
+      Prove it on the real app
+      Attack the premise
+    superpowers
+      Test first, red then green
+      Root-cause debugging
+      Verification before completion
+      Receiving code review
+    lifecycle pack
+      Specs with acceptance criteria
+      Security rules in every phase
+      Cross-model review
+      Repo setup via /audit
+```
+
