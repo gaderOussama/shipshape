@@ -82,3 +82,30 @@ The repro test lands before the fix.
 - L: tag tests with the spec's `AC-N`. Run `/test` to cover the rest.
 - No test framework in the repo: leave one runnable assert-based check, and say so.
 
+## 3. Build
+
+- S: inline. M and L: Sonnet workers.
+- Each worker brief holds:
+  - the goal, restated
+  - the files it owns
+  - the data shape
+  - the behaviors to test (phase 2)
+  - the rules below
+  - "report DONE, DONE_WITH_CONCERNS, or BLOCKED, with failing-then-passing test output"
+- Never give two workers the same files. Run workers in parallel only when the throughput checkpoint shows independent streams. Dispatch them per `dispatching-parallel-agents`.
+- Accept each worker diff only after checking it against the brief: it does what was asked, the tests were written first and pass, and no files outside its scope changed. This is acceptance, not the review. Phase 5 is the independent review of the combined diff. When a diff is wrong, brief a fresh worker with the consolidated scope. Do not resume the old one.
+
+Rules for all code:
+- Reuse, then stdlib, then native platform, then an existing dependency, then new code. A new dependency needs a stated reason, and must be real, pinned, and maintained.
+- Match the codebase's patterns, naming, and error handling.
+- Validate input fail-closed at trust boundaries, and parse external data into types.
+- Check authorization, not only authentication, on every action, including object ownership (IDOR).
+- No secrets or PII in code, logs, or error messages.
+- Parameterized queries. No shell, eval, or template strings built from input. Safe path joins.
+- Network calls have timeouts. Retries are bounded and idempotent. Resources get closed.
+- Missing required config fails loudly at startup.
+- When a new API replaces an old one, migrate every caller, delete the old one in the same change, and prove zero references remain.
+- Comments only for a non-obvious why. A deliberate shortcut gets a `ponytail:` comment naming its ceiling and upgrade path.
+- TypeScript: discriminated unions, `unknown` over `any`, `satisfies` over `as`, exhaustive `never` switches. For more, read `~/.claude/skills/typescript-best-practices/references/patterns.md`.
+- Postgres: use the `supabase-postgres-best-practices` skill.
+
