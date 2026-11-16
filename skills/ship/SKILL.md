@@ -177,3 +177,11 @@ Only on the user's go:
 
 For a multi-hour migration, stacked PRs, or "run until done", switch to `/poteto-mode`. It routes to figure-it-out, show-me-your-work, and orchestrate. `/ship` stays the default for normal tasks.
 
+## Do not route to
+
+These are broken or duplicated by this skill:
+- `code-review` (code-review-skill): skip it when its reference guides are missing.
+- superpowers `brainstorming` and `writing-plans` approval chains: `/architect` covers design.
+- superpowers `subagent-driven-development` on M tasks: three agents per task is too costly. For L only, it may execute a multi-task spec build plan.
+- `engineering:*` debug, review, architecture, and testing-strategy: duplicates.
+- arena, swarm, and interrogate on M tasks.
