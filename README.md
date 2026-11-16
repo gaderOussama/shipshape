@@ -215,3 +215,17 @@ shipshape/
 └── README.md
 ```
 
+## FAQ
+
+**Is this slower than plain Claude Code?**
+For S tasks, barely. For M and L tasks, yes: tests, verification, and review take tokens and time. That cost is the point. It replaces the time you would spend finding bugs later.
+
+**Can I use it without the other packs?**
+Partly. The core rules (tiers, test first, build rules, verification, review checklist) live in `SKILL.md` itself. The packs add depth: specs, debugging techniques, reviewer templates.
+
+**Why not just run every pack on every task?**
+They contradict each other and multiply cost. One owner per phase is cheaper and more consistent.
+
+**Does it commit or push on its own?**
+No. Every outward action waits for your yes.
+
