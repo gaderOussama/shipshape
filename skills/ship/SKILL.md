@@ -118,3 +118,34 @@ Rules for all code:
 - L: run `/check verify` against the spec's ACs (no evidence, no tick). For critical logic, run a mutation check: break the code on purpose, confirm a test fails, then restore it.
 - Performance claims: measure before and after, and name what limits the number.
 
+## 5. Review (M, L, or `/ship review`)
+
+Run these on the final diff with read-only reviewers in parallel. Reviewers use a different model from the author. Sonnet-written code is reviewed on Opus, and main-session code is reviewed on Sonnet. When the author is unknown or mixed (`/ship review` on someone's branch), run the correctness and security pass on both Sonnet and Opus. The model that finds a problem first is right until shown otherwise.
+
+S tier: no reviewer agents. The main session reads the diff once against the correctness and security list below before reporting.
+
+1. **Correctness and security.** Severity is Blocker, Major, Minor, or Nit. Check for:
+   - logic errors and edge cases (empty, null, huge, concurrent)
+   - injection (SQL, command, path, template), XSS, CSRF
+   - authn, authz, IDOR
+   - secrets, SSRF, unsafe deserialization
+   - missing rate limits
+   - error messages that leak internals
+   - new or changed dependencies
+2. **Over-engineering** (ponytail-review rules). What can be deleted, what stdlib or native feature replaces it, and which abstractions are speculative. Report `net: -N lines`.
+3. **Readability.** Look for:
+   - layers between a question and its answer
+   - one-caller wrappers
+   - hidden mutable state
+   - names that lie
+   - comments that narrate (keep why-comments and `ponytail:` markers)
+
+L, in addition:
+- the built-in `/security-review` on the branch
+- a blast-radius pass: what outside the diff could break, and prove the one fact the change is safe because of
+- `/check review`, which writes `docs/reviews/`
+
+Brief the correctness and security reviewer from the template `~/.claude/skills/requesting-code-review/code-reviewer.md`, adding the security list above.
+
+Handle findings per `receiving-code-review`: verify each finding against the code before acting on it, and never agree just to agree. Fix Blockers and Majors, then rerun phase 4. Push back on wrong findings with a concrete reason. Fix Minor and Nit findings when they are one-liners; otherwise list them.
+
