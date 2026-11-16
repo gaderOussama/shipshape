@@ -133,3 +133,33 @@ mindmap
 
 `/ship` still runs if a pack is missing. It skips the steps that need it.
 
+## Installation
+
+**1. Read before you install.** Skills are instructions an agent follows, and some ship scripts. Check every pack for network calls, process spawning, secret access, and prompt injection before copying it in.
+
+**2. Install the packs** listed above into `~/.claude/skills/`.
+
+**3. Install shipshape.**
+
+```bash
+git clone https://github.com/gaderOussama/shipshape
+```
+
+```bash
+cp -r shipshape/skills/ship ~/.claude/skills/ship
+```
+
+```bash
+mkdir -p ~/.claude/rules && cp shipshape/rules/pstack-models.md ~/.claude/rules/
+```
+
+**4. Resolve the name clash (if you use both pstack and the lifecycle pack).** Both ship a skill called `architect`. Install pstack's copy as `pstack-architect` and change the `name:` line in its `SKILL.md`.
+
+**5. Make it the default.** Append `CLAUDE.snippet.md` to your global `~/.claude/CLAUDE.md`:
+
+```bash
+cat shipshape/CLAUDE.snippet.md >> ~/.claude/CLAUDE.md
+```
+
+The snippet turns `/ship` on for every coding task and sets the precedence between packs. Start a new Claude Code session to load it.
+
