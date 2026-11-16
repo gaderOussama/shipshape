@@ -268,3 +268,14 @@ The same file sets precedence, so packs stop fighting:
   parallel workers, /security-review, blast-radius pass.
 ```
 
+## What I would tell someone doing the same
+
+1. **Read before you install.** Skills are instructions with real power over your machine. Grep for network calls, process spawning, secrets, and prompt injection.
+2. **Do not stack packs blindly.** Overlapping skills cost tokens and give contradictory orders. Pick one owner per phase.
+3. **Scale ceremony, never proof.** Small tasks get less process. No task gets to skip "show me it runs".
+4. **Review on a different model.** A model reviewing its own code shares its blind spots.
+5. **Make the good path the default.** A workflow you have to remember to invoke is a workflow you will skip.
+
+---
+
+*Stack: Claude Code with ponytail, pstack ([backnotprop/pstack](https://github.com/backnotprop/pstack), mirror of cursor/plugins/pstack), superpowers ([obra/superpowers](https://github.com/obra/superpowers)), and a lifecycle skill pack. Diagrams are Mermaid and render on GitHub, GitLab, Obsidian, and most static blog generators with a Mermaid plugin.*
