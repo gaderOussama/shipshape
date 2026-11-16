@@ -65,3 +65,32 @@ What the checks found:
 - **pstack (569 files):** clean. Its scripts only call `gh`, `git`, a pinned npm package with a checksum, and a checksummed TLA+ jar from the official GitHub release. One behavior was overridden: its "external actions proceed without asking" rule. The agent still asks before sending, posting, pushing, or deploying.
 - **superpowers (68 files installed):** clean. Its one network component, a brainstorming preview server, binds to `127.0.0.1` only and requires a random token plus an origin check. It opens a browser only when you opt in.
 
+## Step 2: Audit every skill
+
+Three research subagents read the packs in parallel and reported each skill's purpose, phase, gates, cost, and conflicts. The main session merged the findings.
+
+```mermaid
+sequenceDiagram
+    participant O as Orchestrator (Opus)
+    participant W1 as Worker: superpowers
+    participant W2 as Worker: lifecycle + review
+    participant W3 as Worker: pstack + ponytail
+    participant V as Worker: verifier
+    O->>W1: Read 9 skills, report gates and conflicts
+    O->>W2: Read 9 skills + review/security skills
+    O->>W3: Read playbooks, principles, ponytail family
+    W1-->>O: Strongest rules, broken references
+    W2-->>O: Best architecture/test/security/review pieces
+    W3-->>O: Minimal everyday set vs heavy pieces
+    O->>O: Design /ship
+    O->>V: Check paths, contradictions, ambiguities
+    V-->>O: 5 contradictions, 7 ambiguities
+    O->>O: Fix and finalize
+```
+
+Key findings:
+
+- Several superpowers skills were an older version with missing support files. I reinstalled them from upstream and backed up the old copies.
+- Almost every pstack skill can only be started by the user typing it, not by the agent. A default workflow has to read those files directly.
+- Full pstack rigor on every task is too heavy. It belongs on big or unattended work.
+
