@@ -53,3 +53,19 @@ L, in addition:
 
 Plans name files, data shapes, and tests. Plans never contain full code.
 
+## Debug loop (bug fixes and any failing check)
+
+1. Reproduce on the surface where the bug was reported and capture the failing output.
+2. Localize. Bisect the code or the history. In multi-component flows, instrument each boundary.
+3. Form one falsifiable hypothesis at a time, test it, and change one thing.
+4. Fix the root cause at the first place the system went wrong. Grep for siblings with the same shape. No extra guards that "might help".
+5. After three failed fixes that share a premise, stop. Write the premise down and test it directly. If the design is wrong, go back to phase 1 and tell the user.
+
+Techniques in `~/.claude/skills/systematic-debugging/`:
+- `root-cause-tracing.md` for tracing a bad value back up the call stack.
+- `defense-in-depth.md` for deciding which layers get validation after the fix.
+- `condition-based-waiting.md` for flaky or timing tests (replace sleeps with conditions).
+- `find-polluter.sh` for finding the test that pollutes shared state.
+
+The repro test lands before the fix.
+
