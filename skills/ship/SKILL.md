@@ -69,3 +69,16 @@ Techniques in `~/.claude/skills/systematic-debugging/`:
 
 The repro test lands before the fix.
 
+## 2. Test first (M, L; S only when logic changes)
+
+- The main session lists, in the worker brief, the behaviors to test and the break each one catches. The worker writes the failing tests first and shows the failing output before any production code. It then writes the minimal code to pass them. Each test must fail for the intended reason.
+- Each test names the break it catches. Assert observable behavior through the public interface.
+- Derive expected values by hand, never by calling the code under test.
+- Mock only slow or external boundaries (network, clock, filesystem, third parties), never the unit under test.
+- No change-detector tests (`expect(MAX_RETRIES).toBe(5)`), no tests of the framework, no snapshot-everything tests. Prefer no test to a bad test. Trivial code earns none.
+- Never weaken an assertion to go green. A test that exposes a real bug gets reported under BUGS_FOUND.
+- Code touching auth, sessions, payments, PII, or tokens gets these cases: unauthorized access, missing, expired, or tampered credentials, and no secret in output or logs.
+- Deterministic tests only: frozen clock, seeded randomness, no sleeps.
+- L: tag tests with the spec's `AC-N`. Run `/test` to cover the rest.
+- No test framework in the repo: leave one runnable assert-based check, and say so.
+
