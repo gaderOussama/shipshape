@@ -165,3 +165,11 @@ Only on the user's go:
 - Write the PR body as Why, What changed, Scope, Tradeoffs, Blast radius, Verification.
 - L: run `/document pr`, and run `/sync` when the repo has `AGENTS.md` or `docs/specs/`.
 
+## Setup (`/ship setup`, once per repo)
+
+1. Detect the stack and the test, lint, typecheck, and run commands.
+2. No `AGENTS.md`: run `/audit` to record conventions and commands. When one exists, make sure the commands are in it.
+3. No runnable tests: propose the stack's standard framework with one command that runs everything. Install it only on the user's OK.
+4. Offer once: `/create-verification-skill`, so agents can drive the real app for proof.
+5. No pre-commit checks: offer a lint, typecheck, and test hook. Add it only on the user's OK.
+
