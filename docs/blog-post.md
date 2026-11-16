@@ -133,3 +133,97 @@ mindmap
       Repo setup via /audit
 ```
 
+## How `/ship` works
+
+### Ceremony scales with risk
+
+A typo fix should not get a spec and three reviewers. A payment change should. `/ship` sizes every task into a tier before doing anything.
+
+```mermaid
+flowchart TD
+    A[New coding task] --> B{Changes behavior users see?}
+    B -- No --> C{Touches security, data, or money?}
+    C -- No --> S[S tier]
+    C -- Yes --> M
+    B -- Yes --> D{Crosses modules, new data model, auth, payments, PII, concurrency, or 8+ files?}
+    D -- No --> M[M tier]
+    D -- Yes --> L[L tier]
+    M --> E{Can lose data, leak data, or move money?}
+    E -- Yes --> L
+    E -- No --> M2[Stay M]
+    style S fill:#d4edda,stroke:#2d6a4f
+    style M fill:#fff3cd,stroke:#b08900
+    style M2 fill:#fff3cd,stroke:#b08900
+    style L fill:#f8d7da,stroke:#9b2226
+```
+
+Any bug fix is at least M, because it needs a test that reproduces the bug.
+
+### The loop
+
+```mermaid
+flowchart LR
+    F[0. Frame] --> D[1. Design]
+    D --> T[2. Test first]
+    T --> B[3. Build]
+    B --> V[4. Verify]
+    V --> R[5. Review]
+    R -- Blockers found --> B
+    R -- Clean --> X[6. Finish]
+    V -- Failing --> DBG[Debug loop]
+    DBG --> T
+```
+
+### What each tier runs
+
+| Phase | S | M | L |
+|---|:---:|:---:|:---:|
+| Frame: restate goal, read callers | ✅ | ✅ | ✅ |
+| Design: data shape, caller-first | | ✅ | ✅ |
+| Spec via `/architect` | | | ✅ |
+| Failing test first | only if logic changes | ✅ | ✅ + tagged to spec |
+| Built by Sonnet workers | one-liners inline | ✅ | ✅ in parallel |
+| Full suite + run the real app | ✅ | ✅ | ✅ + `/check verify` |
+| Mutation check | | | critical logic |
+| Self-review against security list | ✅ | | |
+| Security + over-engineering + readability reviewers | | ✅ | ✅ |
+| Built-in `/security-review` + blast radius | | | ✅ |
+| Report length | code + 3 lines | full report | full report + `/document` |
+
+### Who does what
+
+My standing rule is that Opus orchestrates and Sonnet workers build. `/ship` keeps that split and adds one rule from the lifecycle pack: code is reviewed by a different model than the one that wrote it.
+
+```mermaid
+sequenceDiagram
+    participant U as You
+    participant O as Main session (Opus)
+    participant S as Sonnet worker
+    participant R as Reviewer (other model)
+    U->>O: /ship add rate limiting to login
+    O->>O: Frame + pick tier (M)
+    O->>O: Design: data shape, caller usage
+    O->>S: Brief: goal, files, behaviors to test, rules
+    S->>S: Write failing tests (show red)
+    S->>S: Minimal code (show green)
+    S-->>O: DONE + test output
+    O->>O: Accept diff against brief, run full suite, run the app
+    O->>R: Review final diff (security, over-engineering, readability)
+    R-->>O: Findings by severity
+    O->>O: Verify each finding, fix Blockers/Majors, re-verify
+    O-->>U: Goal, changes, evidence, risks
+    U->>O: "commit it"
+```
+
+### Security is built into every phase
+
+There is no single "security step" to forget. It shows up in five places:
+
+```mermaid
+flowchart LR
+    A["Tier choice<br/>auth, PII, money bump the tier"] --> B["Design<br/>security model in L specs"]
+    B --> C["Tests<br/>unauthorized, expired, tampered, no-leak cases"]
+    C --> D["Build<br/>validation, authz + IDOR, no secrets, safe queries"]
+    D --> E["Review<br/>injection, XSS, SSRF, deps, + /security-review on L"]
+```
+
