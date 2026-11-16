@@ -227,3 +227,44 @@ flowchart LR
     D --> E["Review<br/>injection, XSS, SSRF, deps, + /security-review on L"]
 ```
 
+## How to use it
+
+| Command | What it does |
+|---|---|
+| `/ship <task>` | Runs the full loop and picks the tier itself. |
+| `/ship S\|M\|L <task>` | Forces a tier. |
+| `/ship review` | Reviews the current diff only. |
+| `/ship setup` | One-time repo prep: finds test/lint/run commands, records conventions in `AGENTS.md`, proposes a test framework and pre-commit checks (asks before installing). |
+| `/poteto-mode` | Heavy mode for multi-hour, unattended, or multi-PR work. |
+| "stop ship" | Turns it off for the session. |
+
+You usually do not need to type `/ship` at all. A rule in the global `~/.claude/CLAUDE.md` makes it the default for any coding task in any project:
+
+```markdown
+# ship: default dev workflow (on by default)
+- On ANY coding task in any project, read ~/.claude/skills/ship/SKILL.md
+  once per session and follow it without being asked.
+```
+
+The same file sets precedence, so packs stop fighting:
+
+- `/ship` decides which other skills run on coding tasks.
+- Skills that stop for approval (brainstorming, plan writing) run only when named.
+- Model choices follow the orchestration rule, not each pack's defaults.
+- Outward actions (push, PR, deploy, messages) always need a yes.
+
+### A first session in a new repo
+
+```text
+> /ship setup
+  Detects stack, test and lint commands, writes AGENTS.md, offers a test framework.
+
+> fix the bug where the cart total ignores discounts
+  Tier M (bug fix). Repro test fails, root cause found, fix, suite green,
+  reviewed on a second model, short report with evidence.
+
+> add Stripe webhooks for refunds
+  Tier L (money). Spec with acceptance criteria, security model, tests per AC,
+  parallel workers, /security-review, blast-radius pass.
+```
+
