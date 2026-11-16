@@ -189,3 +189,13 @@ With the `CLAUDE.md` snippet installed, you rarely type `/ship`. Ask for a chang
   tests per criterion, parallel workers, /security-review.
 ```
 
+## Precedence
+
+When packs disagree, this order wins:
+
+1. **Your orchestration rule.** Sonnet workers build, Opus reviews. Pack model defaults are ignored.
+2. **ponytail's minimal-code ladder.** When it and pstack disagree, the smaller change wins.
+3. **`/ship` decides which skills run.** Skills that stop for approval (brainstorming, plan writing) run only when you name them.
+4. **Outward actions always need a yes.** Commits, pushes, PRs, deploys, and messages.
+5. **Cursor-only steps** in pstack (bugbot, automations, cloud agents) are skipped.
+
