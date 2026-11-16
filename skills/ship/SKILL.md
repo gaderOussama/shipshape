@@ -109,3 +109,12 @@ Rules for all code:
 - TypeScript: discriminated unions, `unknown` over `any`, `satisfies` over `as`, exhaustive `never` switches. For more, read `~/.claude/skills/typescript-best-practices/references/patterns.md`.
 - Postgres: use the `supabase-postgres-best-practices` skill.
 
+## 4. Verify (every tier)
+
+- Follow `verification-before-completion`: no "done", "fixed", or "passing" claim without running the command in this turn and reading its output.
+- Run typecheck, lint, and the full test suite. Report unrelated failures by name. Do not hide them.
+- Prove it on the real artifact. Run the app, CLI, or endpoint the way a user would and show the output. "It compiles" is not done. If you cannot run it, report BLOCKED and say why.
+- Bug fix: show failing-before and passing-after output.
+- L: run `/check verify` against the spec's ACs (no evidence, no tick). For critical logic, run a mutation check: break the code on purpose, confirm a test fails, then restore it.
+- Performance claims: measure before and after, and name what limits the number.
+
