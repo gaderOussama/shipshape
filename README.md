@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/thumbnail.webp" alt="Shipshape: four skill packs (ponytail, pstack, superpowers, lifecycle) around one /ship workflow" width="100%">
+</p>
+
 # shipshape
 
 **One command that turns Claude Code into a disciplined engineering team.**
