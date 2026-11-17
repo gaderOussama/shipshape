@@ -212,6 +212,8 @@ shipshape/
 │       └── SKILL.md          # the workflow
 ├── rules/
 │   └── pstack-models.md      # pstack roles mapped to Claude Code models
+├── assets/
+│   └── thumbnail.webp        # README banner
 ├── docs/
 │   └── blog-post.md          # the story of how this was built
 ├── CLAUDE.snippet.md         # default-on rule + precedence
