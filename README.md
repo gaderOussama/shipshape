@@ -130,7 +130,7 @@ mindmap
 
 | Pack | Source | Required for |
 |---|---|---|
-| ponytail | its own repository | Minimal-code rules (always on) |
+| ponytail | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) | Minimal-code rules (always on) |
 | pstack | [backnotprop/pstack](https://github.com/backnotprop/pstack) | Principles, `pstack-architect`, `/poteto-mode` |
 | superpowers | [obra/superpowers](https://github.com/obra/superpowers) | Debugging techniques, verification, review templates |
 | lifecycle pack | its own repository | `/architect`, `/test`, `/check`, `/audit`, `/document`, `/sync` |
@@ -241,7 +241,8 @@ shipshape is glue. The ideas belong to the pack authors:
 
 - **pstack** by Poteto, mirrored by backnotprop. MIT.
 - **superpowers** by Jesse Vincent. MIT.
-- **ponytail** and the **lifecycle pack** by their respective authors.
+- **ponytail** by Dietrich Gebert. MIT.
+- The **lifecycle pack** by its author.
 
 Check each pack's license before redistributing its files. This repository ships only its own files.
 
