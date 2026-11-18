@@ -48,6 +48,7 @@ M:
 
 L, in addition:
 - Run `/architect` (the lifecycle spec skill). It writes `docs/specs/NNNN-*.md` with AC-1 style acceptance criteria, a data model, a security model, and a build plan. Every value an action produces needs a named source, or it is an open decision.
+- No `/architect` installed: read `~/.claude/skills/pstack-architect/SKILL.md` and write the same spec shape (ACs, data model, security model, build plan) to `docs/specs/` yourself.
 - For a real fork between two or more structurally different designs on a one-way door, read `~/.claude/skills/pstack-architect/SKILL.md`. Sketch at least two shapes and pick by interface depth. Do not run arena routinely.
 - Write the throughput checkpoint: blocking first steps, independent workstreams, shared mutable state, and the smallest safe decomposition. It sets the worker split in phase 3.
 
