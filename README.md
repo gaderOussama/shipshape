@@ -6,6 +6,8 @@
 
 **One command that turns Claude Code into a disciplined engineering team.**
 
+> **Install:** open Claude Code and say *"Install shipshape from https://github.com/gaderOussama/shipshape"*. Claude handles the rest, including missing skill packs. See [INSTALL.md](INSTALL.md).
+
 `/ship` combines the best rules from four Claude Code skill packs (ponytail, pstack, superpowers, and a lifecycle pack) into one tiered workflow. Every coding task gets framed, designed, tested first, built, proven on the real app, and reviewed for security, over-engineering, and readability. Small tasks stay fast. Risky tasks get the full treatment.
 
 ```mermaid
@@ -139,33 +141,50 @@ mindmap
 
 ## Installation
 
-**1. Read before you install.** Skills are instructions an agent follows, and some ship scripts. Check every pack for network calls, process spawning, secret access, and prompt injection before copying it in.
+### The easy way: tell Claude
 
-**2. Install the packs** listed above into `~/.claude/skills/`.
+Open Claude Code anywhere and say:
 
-**3. Install shipshape.**
+> Install shipshape from https://github.com/gaderOussama/shipshape
+
+Claude follows [INSTALL.md](INSTALL.md). It will:
+
+1. Check which skill packs you already have (`install.sh --check`).
+2. Ask which missing packs to add: ponytail, pstack, superpowers.
+3. Security-review each pack before installing it. It reads every script and searches for network calls, process spawning, secret access, hidden characters, and prompt injection. Then it reports back and waits for your yes.
+4. Install the packs, resolving the `architect` name clash and skipping `using-superpowers`.
+5. Run `install.sh` to add `/ship`, the model mapping, and a marked block in `~/.claude/CLAUDE.md`.
+6. Verify, then tell you to start a new session.
+
+Everything it replaces is backed up to `~/.claude/backups/`. Re-running it is safe. Say "update shipshape" later to pull new versions the same way.
+
+### The manual way
 
 ```bash
-git clone https://github.com/gaderOussama/shipshape
+git clone https://github.com/gaderOussama/shipshape && cd shipshape
 ```
 
 ```bash
-cp -r shipshape/skills/ship ~/.claude/skills/ship
+bash install.sh --check
 ```
+
+Install any missing packs from the [requirements](#requirements) table (see [INSTALL.md](INSTALL.md) step 4 for the exact copy steps), then:
 
 ```bash
-mkdir -p ~/.claude/rules && cp shipshape/rules/pstack-models.md ~/.claude/rules/
+bash install.sh
 ```
 
-**4. Resolve the name clash (if you use both pstack and the lifecycle pack).** Both ship a skill called `architect`. Install pstack's copy as `pstack-architect` and change the `name:` line in its `SKILL.md`.
+Start a new Claude Code session to load it.
 
-**5. Make it the default.** Append `CLAUDE.snippet.md` to your global `~/.claude/CLAUDE.md`:
+### What `install.sh` does
 
-```bash
-cat shipshape/CLAUDE.snippet.md >> ~/.claude/CLAUDE.md
-```
+| Command | Effect |
+|---|---|
+| `bash install.sh` | Installs `skills/ship/`, `rules/pstack-models.md`, and the CLAUDE.md block between `<!-- shipshape:start -->` and `<!-- shipshape:end -->`. Backs up what it changes. Idempotent. |
+| `bash install.sh --check` | Read-only report: core files and each pack, `ok` or `missing`. |
+| `bash install.sh --uninstall` | Removes the CLAUDE.md block, the `/ship` skill, and the rules file if unchanged. Leaves packs alone. |
 
-The snippet turns `/ship` on for every coding task and sets the precedence between packs. Start a new Claude Code session to load it.
+Set `CLAUDE_HOME` to install somewhere other than `~/.claude`.
 
 ## Usage
 
@@ -216,7 +235,11 @@ shipshape/
 │   └── thumbnail.webp        # README banner
 ├── docs/
 │   └── blog-post.md          # the story of how this was built
+├── tests/
+│   └── install.test.sh       # installer tests
 ├── CLAUDE.snippet.md         # default-on rule + precedence
+├── INSTALL.md                # install playbook Claude follows
+├── install.sh                # installs, checks, uninstalls
 ├── LICENSE
 └── README.md
 ```
